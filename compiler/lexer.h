@@ -45,4 +45,6 @@ Lexer* lexer_create(const char* src);
 void lexer_advance(Lexer* lexer);
 Token* lexer_get_next_token(Lexer* lexer);
 
+const char* token_type_to_str(size_t type);
+
 #endif

@@ -116,11 +116,42 @@ Token* lexer_get_next_token(Lexer* lexer)
 
 			case '\0': break;
 
-			default: printf("[Lexer]: Encountered unexpected character '%c'!\n", lexer->current); exit(1); break;
+			default: printf("[Lexer]: Encountered unknown character '%c'!\n", lexer->current); exit(1); break;
 		}
 
 		return lexer_advance_with_token(lexer, token_create(TOKEN_NONE, NULL));
 	}
 
 	return token_create(TOKEN_EOF, NULL);
+}
+
+const char* token_type_to_str(size_t type)
+{
+	switch (type)
+	{
+		case TOKEN_NONE: return "None";
+		case TOKEN_IDENTIFIER: return "Identifier";
+		case TOKEN_NUMBER: return "Number";
+		case TOKEN_EQUALS: return "Equals";
+		case TOKEN_PLUS: return "Plus";
+		case TOKEN_MINUS: return "Minus";
+		case TOKEN_MULTIPLY: return "Multiply";
+		case TOKEN_DIVIDE: return "Divide";
+		case TOKEN_LEFT_PARANTHESIS: return "Left Paranthesis";
+		case TOKEN_RIGHT_PARANTHESIS: return "Right Paranthesis";
+		case TOKEN_LEFT_BRACKET: return "Left Bracket";
+		case TOKEN_RIGHT_BRACKET: return "Right Bracket";
+		case TOKEN_LEFT_BRACE: return "Left Brace";
+		case TOKEN_RIGHT_BRACE: return "Right Brace";
+		case TOKEN_COMMA: return "Comma";
+		case TOKEN_COLON: return "Colon";
+		case TOKEN_SEMICOLON: return "Semicolon";
+		case TOKEN_SINGLE_QUOTES: return "Apostroph";
+		case TOKEN_DOUBLE_QUOTES: return "Quotation Mark";
+		case TOKEN_EOF: return "End of file";
+
+		default: printf("Encountered unknown token type %zu!", type); exit(1); break;
+	}
+
+	return NULL;
 }
