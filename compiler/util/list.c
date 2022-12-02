@@ -20,5 +20,5 @@ void list_add(List* list, void* item)
 {
 	list->size += 1;
 	list_realloc(list);
-	list->items[list->size] = item;
+	list->items[list->size - 1] = item;
 }
