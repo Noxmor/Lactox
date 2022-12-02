@@ -1,5 +1,7 @@
 #include "lexer.h"
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -57,7 +59,7 @@ Token* lexer_parse_identifier(Lexer* lexer)
 {
 	char* value = calloc(1, sizeof(char));
 
-	while (isalpha(lexer->current))
+	while (isalnum(lexer->current))
 	{
 		value = realloc(value, (strlen(value) + 2) * sizeof(char));
 		strcat(value, (char[]) { lexer->current, '\0' });
@@ -65,6 +67,20 @@ Token* lexer_parse_identifier(Lexer* lexer)
 	}
 
 	return token_create(TOKEN_IDENTIFIER, value);
+}
+
+Token* lexer_parse_number(Lexer* lexer)
+{
+	char* value = calloc(1, sizeof(char));
+
+	while (isdigit(lexer->current))
+	{
+		value = realloc(value, (strlen(value) + 2) * sizeof(char));
+		strcat(value, (char[]) { lexer->current, '\0' });
+		lexer_advance(lexer);
+	}
+
+	return token_create(TOKEN_NUMBER, value);
 }
 
 Token* lexer_get_next_token(Lexer* lexer)
@@ -75,6 +91,9 @@ Token* lexer_get_next_token(Lexer* lexer)
 
 		if (isalpha(lexer->current))
 			return lexer_parse_identifier(lexer);
+
+		if (isdigit(lexer->current))
+			return lexer_parse_number(lexer);
 
 		switch (lexer->current)
 		{
@@ -93,7 +112,11 @@ Token* lexer_get_next_token(Lexer* lexer)
 			case ':': return lexer_advance_with_current(lexer, TOKEN_COLON);
 			case ';': return lexer_advance_with_current(lexer, TOKEN_SEMICOLON);
 			case '\'': return lexer_advance_with_current(lexer, TOKEN_SINGLE_QUOTES);
-			case '\"': return lexer_advance_with_current(lexer, TOKEN_DOUBLE_QUOTES);
+			case '\"': return lexer_advance_with_current(lexer, TOKEN_DOUBLE_QUOTES); //TODO: Parse string token!
+
+			case '\0': break;
+
+			default: printf("[Lexer]: Encountered unexpected character '%c'!\n", lexer->current); exit(1); break;
 		}
 
 		return lexer_advance_with_token(lexer, token_create(TOKEN_NONE, NULL));

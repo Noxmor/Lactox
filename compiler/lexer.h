@@ -1,12 +1,13 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 enum
 {
 	TOKEN_NONE = 0,
 	TOKEN_IDENTIFIER,
+	TOKEN_NUMBER,
 	TOKEN_EQUALS,
 	TOKEN_PLUS,
 	TOKEN_MINUS,
