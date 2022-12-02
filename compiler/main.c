@@ -38,7 +38,8 @@ int main(void)
 	Lexer* lexer = lexer_create(read_file("example.lctx"));
 	Parser* parser = parser_create(lexer);
 	AST* root = parser_parse(parser);
-	printf("%p\n", root);
+
+	ast_print(root, 0);
 
 	return 0;
 }
