@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "parser.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,11 +36,9 @@ char* read_file(const char* filename)
 int main(void)
 {
 	Lexer* lexer = lexer_create(read_file("example.lctx"));
-	Token* token = NULL;
-	while ((token = lexer_get_next_token(lexer))->type != TOKEN_EOF)
-	{
-		printf("[Lexer]: \"%s\"\n", token->value);
-	}
+	Parser* parser = parser_create(lexer);
+	AST* root = parser_parse(parser);
+	printf("%p\n", root);
 
 	return 0;
 }
